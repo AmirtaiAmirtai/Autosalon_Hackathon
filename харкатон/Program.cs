@@ -1,3 +1,16 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using харкатон;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +20,40 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSettings"));
+
+//var secretKey = builder.Configuration.GetSection("JWTSettings:SecretKey").Value;
+//var issuer = builder.Configuration.GetSection("JWTSettings:Issuer").Value;
+//var audience = builder.Configuration.GetSection("JWTSettings:Audience").Value;
+//var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+//})
+//    .AddJwtBearer(options =>
+//    {
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidateIssuer = true,
+//            ValidIssuer = issuer,
+//            ValidateAudience = true,
+//            ValidAudience = audience,
+//            ValidateLifetime = true,
+//            IssuerSigningKey = signingKey,
+//            ValidateIssuerSigningKey = true
+
+//        };
+//    });
+
+
+//var connectionString = builder.Configuration.GetConnectionString("UserDB");
+//builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlite(connectionString));
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserDbContext>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -15,7 +62,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
