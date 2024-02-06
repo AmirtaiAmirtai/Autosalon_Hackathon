@@ -6,6 +6,7 @@ using харкатон.Controllers.models;
 using RouteAttribute = Microsoft.AspNetCore.Components.RouteAttribute;
 using харкатон.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace харкатон.Controllers
 {
@@ -88,14 +89,12 @@ namespace харкатон.Controllers
 
             return CreatedAtAction(nameof(GetCar), new { id = newCar.Id }, newCar);
         }
-    }
-
-    [HttpDelete("Delete-Car-By/{id}")]
+   [HttpDelete("Delete-Car-By/{id}")]
     public async Task<IActionResult> DeleteCar(int id)
     {
         var car = InfoHelper.cars.FirstOrDefault(t => t.Id == id);
         if (car == null)
-            return NotFound();
+            return BadRequest();
 
         await Task.Run(() => 
         {
@@ -103,7 +102,9 @@ namespace харкатон.Controllers
         });
 
         return NoContent();
-    }
+    } }
+
+    
 }
-}
+
 
