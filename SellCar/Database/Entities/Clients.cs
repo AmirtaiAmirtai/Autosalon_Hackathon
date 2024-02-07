@@ -1,4 +1,4 @@
-﻿namespace харкатон.Models;
+﻿namespace SellCar.Database.Entities;
 
 public class Clients
 {

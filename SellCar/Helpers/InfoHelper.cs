@@ -1,6 +1,6 @@
-﻿using харкатон.Controllers.models;
+﻿using SellCar.Database.Entities;
 
-namespace харкатон.Helpers;
+namespace SellCar.Helpers;
 
 public class InfoHelper
 {

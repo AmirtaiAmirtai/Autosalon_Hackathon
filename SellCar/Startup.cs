@@ -1,6 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace харкатон;
+namespace SellCar;
 
 internal class Startup
 {

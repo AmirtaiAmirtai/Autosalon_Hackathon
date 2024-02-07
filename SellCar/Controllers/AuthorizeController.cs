@@ -5,9 +5,9 @@
 //using System.IdentityModel.Tokens.Jwt;
 //using System.Security.Claims;
 //using System.Text;
-//using харкатон.Models;
+//using SellCar.Models;
 
-//namespace харкатон.Controllers
+//namespace SellCar.Controllers
 //{
 //    [ApiController]
 //    [Route("api/[controller]")]

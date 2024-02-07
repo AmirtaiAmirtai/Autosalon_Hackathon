@@ -1,4 +1,4 @@
-﻿namespace харкатон.Models;
+﻿namespace SellCar.Models;
 
 public class Response
 {

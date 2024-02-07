@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using харкатон.Controllers.models;
+using SellCar.Database.Entities;
+using SellCar.Helpers;
 using RouteAttribute = Microsoft.AspNetCore.Components.RouteAttribute;
-using харкатон.Helpers;
 
-namespace харкатон.Controllers;
+namespace SellCar.Controllers;
 
 [Route("api/[controller]")]
 public class CarsController : ControllerBase

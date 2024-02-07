@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Data.SqlClient;
-using харкатон.Models;
+using SellCar.Database.Entities;
 
-namespace харкатон.Controllers;
+namespace SellCar.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

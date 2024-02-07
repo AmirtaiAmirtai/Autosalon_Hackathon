@@ -1,8 +1,8 @@
 ﻿//using Microsoft.AspNetCore.Mvc;
-//using харкатон.Helpers;
-//using харкатон.Models;
+//using SellCar.Helpers;
+//using SellCar.Models;
 
-//namespace харкатон.Controllers
+//namespace SellCar.Controllers
 //{
 //    public class AuthorizationController : ControllerBase
 //    {

@@ -1,4 +1,4 @@
-﻿namespace харкатон.Controllers.models;
+﻿namespace SellCar.Database.Entities;
 
 public class Car
 {
@@ -6,4 +6,8 @@ public class Car
     public string Name { get; set; }
     public decimal Price { get; set; }
     public string Description { get; set; }
+    
+    public int SellerId { get; set; }
+    
+    public Seller Seller { get; set; }
 }
