@@ -9,17 +9,51 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace харкатон.Controllers
 {
-  
+
     [Route("api/[controller]")]
     public class CarsController : ControllerBase
     {
 
+        private const string SystemUsername = "admin";
+        private const string SystemPassword = "admin123";
+
+        public static UserCredentials user = new UserCredentials
+        {
+            Username = SystemUsername,
+            Password = SystemPassword
+        };
+
+
+        [HttpPost("api/login")]
+
+        public ActionResult Login(string Username, string Password)
+        {
+            // Проверяем совпадение введенных данных с системными
+            if (Username == SystemUsername && Password == SystemPassword)
+            {
+                user.IsActive = true;
+                return Ok("Вход разрешен. Доступ предоставлен.");
+
+            }
+            else
+            {
+                return BadRequest("Ошибка входа. Неверное имя пользователя или пароль.");
+            }
+        }
+
+
+        public class UserCredentials
+        {
+            public string Username { get; set; }
+            public string Password { get; set; }
+            public bool IsActive { get; set; }
+        }
         private static decimal userBalance = 0;
 
         [HttpPost("setbalance")]
         public async Task<IActionResult> SetBalance([FromBody] decimal balance)
         {
-            await Task.Run(() => 
+            await Task.Run(() =>
             {
                 userBalance = balance;
             });
@@ -41,7 +75,7 @@ namespace харкатон.Controllers
                 return BadRequest("Недостаточно средств для покупки автомобиля");
             }
 
-            await Task.Run(() => 
+            await Task.Run(() =>
             {
                 userBalance -= car.Price;
                 InfoHelper.cars.Remove(car);
@@ -74,36 +108,48 @@ namespace харкатон.Controllers
         [HttpPost("AddCar")]
         public async Task<IActionResult> AddCar([FromBody] Car newCar)
         {
-            if (newCar == null)
+
+            if (user.IsActive == true)
             {
-                return BadRequest("Неверные данные для автомобиля");
+
+                if (newCar == null)
+                {
+                    return BadRequest("Неверные данные для автомобиля");
+                }
+
+                newCar.Id = InfoHelper.cars.Count + 1;
+
+                await Task.Run(() =>
+                {
+                    InfoHelper.cars.Add(newCar);
+                });
+
+                return CreatedAtAction(nameof(GetCar), new { id = newCar.Id }, newCar);
+
+            }
+            else
+            {
+                return BadRequest("ВЫ НЕ АВТОРИЗОВАНЫ");
             }
 
-            newCar.Id = InfoHelper.cars.Count + 1;
+        }
+        [HttpDelete("Delete-Car-By/{id}")]
+        public async Task<IActionResult> DeleteCar(int id)
+        {
+            var car = InfoHelper.cars.FirstOrDefault(t => t.Id == id);
+            if (car == null)
+                return NotFound();
 
             await Task.Run(() =>
             {
-                InfoHelper.cars.Add(newCar);
+                InfoHelper.cars.Remove(car);
             });
 
-            return CreatedAtAction(nameof(GetCar), new { id = newCar.Id }, newCar);
+            return NoContent();
         }
     }
 
-    [HttpDelete("Delete-Car-By/{id}")]
-    public async Task<IActionResult> DeleteCar(int id)
-    {
-        var car = InfoHelper.cars.FirstOrDefault(t => t.Id == id);
-        if (car == null)
-            return NotFound();
 
-        await Task.Run(() => 
-        {
-            InfoHelper.cars.Remove(car);
-        });
+}
 
-        return NoContent();
-    }
-}
-}
 
