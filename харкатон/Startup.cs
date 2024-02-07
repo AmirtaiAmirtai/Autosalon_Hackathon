@@ -1,28 +1,27 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace харкатон
+namespace харкатон;
+
+internal class Startup
 {
-    internal class Startup
+    public void ConfigureServices(IServiceCollection services)
     {
-        public void ConfigureServices(IServiceCollection services)
+        // ... другие настройки ...
+
+        services.AddSwaggerGen(c =>
         {
-            // ... другие настройки ...
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API Name", Version = "v1" });
+        });
+    }
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API Name", Version = "v1" });
-            });
-        }
+    public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
+    {
+        // ... другие настройки ...
 
-        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
         {
-            // ... другие настройки ...
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Toy Store API V1");
-            });
-        }
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Toy Store API V1");
+        });
     }
 }

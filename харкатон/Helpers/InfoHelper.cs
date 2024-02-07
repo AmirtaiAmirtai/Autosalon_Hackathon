@@ -1,10 +1,10 @@
 ﻿using харкатон.Controllers.models;
 
-namespace харкатон.Helpers
+namespace харкатон.Helpers;
+
+public class InfoHelper
 {
-    public class InfoHelper
-    {
-        public static List<Car> cars = new List<Car>
+    public static List<Car> cars = new List<Car>
     {
         new Car { Id = 1, Name = "SleekSport ZR5000", Price = 20.99m, Description = "The SleekSport ZR5000 is a high-performance sports car designed for " +
             "enthusiasts who crave speed and precision. With its aerodynamic curves, low profile, and a powerful V8 engine under the hood, the ZR5000 can" +
@@ -24,11 +24,11 @@ namespace харкатон.Helpers
 
 
         new Car { Id = 3, Name = "EcoDrive E1", Price = 49.99m, Description = "The EcoDrive E1 is an eco-friendly compact car that" +
-            " prioritizes sustainability without compromising on style. With its all-electric powertrain, the E1 produces zero emissions," +
-            " making it an ideal choice for environmentally conscious drivers. Despite its compact size, the interior is" +
-            " surprisingly spacious, featuring modern amenities and a minimalist design. The EcoDrive E1 is not only budget-friendly" +
-            " but also boasts an impressive range on a single charge, making it a practical and green solution for daily commuting in" +
-            " urban environments." },
+                                                                              " prioritizes sustainability without compromising on style. With its all-electric powertrain, the E1 produces zero emissions," +
+                                                                              " making it an ideal choice for environmentally conscious drivers. Despite its compact size, the interior is" +
+                                                                              " surprisingly spacious, featuring modern amenities and a minimalist design. The EcoDrive E1 is not only budget-friendly" +
+                                                                              " but also boasts an impressive range on a single charge, making it a practical and green solution for daily commuting in" +
+                                                                              " urban environments." },
 
 
         new Car { Id = 4, Name = "Luxury Cruiser 9000", Price = 89.99m, Description = "The Luxury Cruiser 9000 defines opulence on wheels." +
@@ -70,5 +70,4 @@ namespace харкатон.Helpers
             " the Classic Revival 67 a symbol of elegance and power on the open road." }
     };
 
-    }
 }
