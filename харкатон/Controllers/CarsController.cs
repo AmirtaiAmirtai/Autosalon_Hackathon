@@ -22,7 +22,7 @@ namespace харкатон.Controllers
             await Task.Run(() => 
             {
                 userBalance = balance;
-            });
+            });         
 
             return Ok($"Баланс пользователя установлен: {userBalance}");
         }
