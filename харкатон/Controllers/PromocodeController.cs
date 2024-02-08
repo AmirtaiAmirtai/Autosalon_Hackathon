@@ -28,7 +28,6 @@ namespace харкатон.Controllers
 
                 foreach (var car in cars)
                 {
-                    
                     car.Price *= 0.9m;
                 }
                 IsPromoCodeUsed = true;
@@ -80,6 +79,7 @@ namespace харкатон.Controllers
                 await Task.Run(() =>
                 {
                     UsedPromocodes.promocodes.Remove(promo);
+                    IsPromoCodeUsed = false;
                     foreach (var car in cars)
                     {
                         car.Price *= 1.1m;
@@ -95,6 +95,7 @@ namespace харкатон.Controllers
                 await Task.Run(() =>
                 {
                     UsedPromocodes.promocodes.Remove(promo);
+                    IsPromoCodeUsed = false;
                     foreach (var car in cars)
                     {
                         car.Price *= 1.2m;
@@ -110,6 +111,7 @@ namespace харкатон.Controllers
                 await Task.Run(() =>
                 {
                     UsedPromocodes.promocodes.Remove(promo);
+                    IsPromoCodeUsed = false;
                     foreach (var car in cars)
                     {
                         car.Price *= 1.3m;
