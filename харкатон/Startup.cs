@@ -12,6 +12,8 @@ namespace харкатон
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API Name", Version = "v1" });
             });
+
+
         }
 
         public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
@@ -23,6 +25,7 @@ namespace харкатон
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Toy Store API V1");
             });
+
         }
     }
 }

@@ -34,7 +34,6 @@ namespace харкатон.Controllers
             {
                 return "Error";
             }
-
         }
 
         [HttpPost]
