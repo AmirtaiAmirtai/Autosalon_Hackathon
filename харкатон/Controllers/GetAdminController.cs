@@ -144,8 +144,30 @@ namespace харкатон.Controllers
                 }
                 else
                     return BadRequest("Недостаточно прав для осуществления данной команды.");
-            
+        }
+        [HttpPost("AddCar")]
+        public async Task<IActionResult> DeleteReview([FromBody] Car newCar)
+        {
+            if (user.IsActive == true)
+            {
+                if (newCar == null)
+                {
+                    return BadRequest("Неверные данные для автомобиля");
+                }
 
+                newCar.Id = InfoHelper.cars.Count + 1;
+
+                await Task.Run(() =>
+                {
+                    InfoHelper.cars.Add(newCar);
+                });
+
+                return CreatedAtAction("Добавлена машина: \n" + nameof(GetCar), new { id = newCar.Id }, newCar);
+            }
+            else
+            {
+                return BadRequest("Недостаточно прав для осуществления данной команды.");
+            }
         }
     }
 }

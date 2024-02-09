@@ -7,6 +7,7 @@ using RouteAttribute = Microsoft.AspNetCore.Components.RouteAttribute;
 using харкатон.Helpers;
 using харкатон.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 
 namespace харкатон.Controllers
 {
@@ -14,7 +15,7 @@ namespace харкатон.Controllers
     [Route("api/[controller]")]
     public class CarsController : ControllerBase
     {
-    private static decimal userBalance = 0;
+        private static decimal userBalance = 0;
 
 
 
@@ -28,12 +29,12 @@ namespace харкатон.Controllers
             });
 
             return Ok($"Баланс пользователя установлен: {userBalance}");
-        } 
+        }
 
 
 
         //покупка машины. удаляет машину из списка после покупки.
-        [HttpPost("purchase/{Id}")] 
+        [HttpPost("purchase/{Id}")]
         public async Task<IActionResult> PurchaseCar(int Id)
         {
             var car = InfoHelper.cars.FirstOrDefault(t => t.Id == Id);
@@ -59,7 +60,7 @@ namespace харкатон.Controllers
 
 
         //Возврат машины
-        [HttpPost("Refund/{Id}")] 
+        [HttpPost("Refund/{Id}")]
         public async Task<IActionResult> RefundCar(int Id)
         {
             var car = InfoHelper.purchasedCars.FirstOrDefault(t => t.Id == Id);
@@ -117,8 +118,29 @@ namespace харкатон.Controllers
             return Ok(car);
         }
 
+        [HttpPost("Rate-A-Car/{Id}")]
+        public async Task<IActionResult> RateCar(int Id, int Rate, string review)
+        {
+            var car = InfoHelper.cars.FirstOrDefault(t => t.Id == Id);
 
-       
+            if (car == null || review == null )
+            {
+                return NotFound("Ошибка ввода машины или отзыва. ");
+            }
+
+            if (Rate > 5 || Rate < 1)
+                return NotFound("Оценка не может быть выше 5 и ниже 1.");
+
+            await Task.Run(() =>
+            {
+                car.Review.Add(review);
+                car.Rate.Add(Rate);
+                car.GeneralRating = car.Rate.Average();
+            });
+
+            return Ok($"Отзыв для автомобиля'{car.Name}' оставлен. Спасибо!");
+        }
+
     }
 
 
