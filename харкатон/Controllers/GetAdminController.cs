@@ -2,7 +2,7 @@
 using харкатон.Controllers.models;
 using харкатон.Helpers;
 
-namespace харкатон.Controllers 
+namespace харкатон.Controllers
 {
     public class AdminkaController : Controller
     {
@@ -67,7 +67,7 @@ namespace харкатон.Controllers
         }
 
         [HttpGet("{id}", Name = "GetCar")]
-        [ApiExplorerSettings(IgnoreApi = true)] 
+        [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult GetCar(int id)
 
         {
@@ -103,35 +103,50 @@ namespace харкатон.Controllers
                 return BadRequest("Недостаточно прав для осуществления данной команды.");
         }
 
+
+
+        //просмотр удаленных машин. функция для админа
         [HttpGet("See Deleted Cars")]
         public IActionResult GetDeletedCars()
 
         {
             var DeletedCars = OtherLists.DeletedCars;
-            
-            return Ok(DeletedCars);
-        }
 
-        [HttpPost("Return-Deleted-Car-By/{id}")]
-        public async Task<IActionResult> ReturnDeletedCar(int id)
-        {
-            var car = OtherLists.DeletedCars.FirstOrDefault(t => t.Id == id);
             if (user.IsActive == true)
             {
-                if (car == null)
-                    return BadRequest("Удаленной машины с таким ID не существует.");
-
-                await Task.Run(() =>
-                {
-                    OtherLists.DeletedCars.Remove(car);
-                    InfoHelper.cars.Add(car);
-                });
-
-                return Ok($"машина {car.Name} возвращена в список машин в наличии.");
+                return Ok(DeletedCars);
             }
             else
                 return BadRequest("Недостаточно прав для осуществления данной команды.");
+
+        }
+
+
+
+        //возвращение удаленной машины по айди. функция для админа
+        [HttpPost("Return-Deleted-Car-By/{id}")]
+        public async Task<IActionResult> ReturnDeletedCar(int id)
+        {
+        
+                var car = OtherLists.DeletedCars.FirstOrDefault(t => t.Id == id);
+                if (user.IsActive == true)
+                {
+                    if (car == null)
+                        return BadRequest("Удаленной машины с таким ID не существует.");
+
+                    await Task.Run(() =>
+                    {
+                        OtherLists.DeletedCars.Remove(car);
+                        InfoHelper.cars.Add(car);
+                    });
+
+                    return Ok($"машина {car.Name} возвращена в список машин в наличии.");
+                }
+                else
+                    return BadRequest("Недостаточно прав для осуществления данной команды.");
+            
+
         }
     }
-    }
+}
 

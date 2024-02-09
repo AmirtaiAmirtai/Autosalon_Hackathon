@@ -68,7 +68,7 @@ namespace харкатон.Controllers
         }
 
 
-        [HttpDelete("delete-promocode")] //удаление промокода
+        [HttpDelete("delete-promocode")] //удаление использованного промокода
         public async Task<IActionResult> DeletePromo(string promo)
         {
             var promocode = OtherLists.promocodes;

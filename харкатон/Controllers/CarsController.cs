@@ -14,39 +14,7 @@ namespace харкатон.Controllers
     [Route("api/[controller]")]
     public class CarsController : ControllerBase
     {
-        //// данные для получения админки
-        //private const string SystemUsername = "admin";
-        //private const string SystemPassword = "admin123";
-
-        //public static UserCredentials user = new UserCredentials
-        //{
-        //    Username = SystemUsername,
-        //    Password = SystemPassword
-        //};
-
-
-        //[HttpPost("Admin/Login")]
-
-        //public ActionResult LoginAsAdmin(string Username, string Password)
-        //{
-        //    // Проверяем совпадение введенных данных с системными
-        //    if (Username == SystemUsername && Password == SystemPassword)
-        //    {
-        //        user.IsActive = true;
-        //        return Ok("Вход разрешен. Доступ предоставлен.");
-        //    }
-        //    else
-        //        return BadRequest("Ошибка входа. Неверное имя пользователя или пароль.");
-        //}
-
-
-        //public class UserCredentials
-        //{
-        //    public string Username { get; set; }
-        //    public string Password { get; set; }
-        //    public bool IsActive { get; set; }
-        //}
-        private static decimal userBalance = 0;
+    private static decimal userBalance = 0;
 
 
 
@@ -150,55 +118,7 @@ namespace харкатон.Controllers
         }
 
 
-        ////Добавление новой машины в список машин в наличии. Функция для администратора
-        //[HttpPost("AddCar")]
-        //public async Task<IActionResult> AddCar([FromBody] Car newCar)
-        //{
-
-        //    if (user.IsActive == true)
-        //    {
-
-        //        if (newCar == null)
-        //        {
-        //            return BadRequest("Неверные данные для автомобиля");
-        //        }
-
-        //        newCar.Id = InfoHelper.cars.Count + 1;
-
-        //        await Task.Run(() =>
-        //        {
-        //            InfoHelper.cars.Add(newCar);
-        //        });
-
-        //        return CreatedAtAction(nameof(GetCar), new { id = newCar.Id }, newCar);
-
-        //    }
-        //    else
-        //        return BadRequest("Недостаточно прав для осуществления данной команды.");
-        //}
-
-
-
-        ////Удаление машины из списка машин в наличии. Функция для администратора
-        //[HttpDelete("Delete-Car-By/{id}")]
-        //public async Task<IActionResult> DeleteCar(int id)
-        //{
-        //    var car = InfoHelper.cars.FirstOrDefault(t => t.Id == id);
-        //    if (user.IsActive == true)
-        //        {
-        //        if (car == null)
-        //            return BadRequest("Машины с таким ID не существует.");
-
-        //        await Task.Run(() =>
-        //        {
-        //            InfoHelper.cars.Remove(car);
-        //        });
-
-        //        return NoContent();
-        //    }
-        //    else
-        //        return BadRequest("Недостаточно прав для осуществления данной команды.");
-        //}
+       
     }
 
 
