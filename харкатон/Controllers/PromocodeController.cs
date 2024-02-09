@@ -6,7 +6,7 @@ namespace харкатон.Controllers
     public class PromocodeController : Controller
     {
 
-        
+        // Система промокодов - ввод одного из трех промокодов дает разные скидки на все машины в зависимости от введенного промокода 
         public string SystemPromocode = "ILOVECARS";
         public string SystemPromocode2 = "ISOLDMYKIDS";
         public string SystemPromocode1 = "IAMPOOR";
@@ -15,7 +15,7 @@ namespace харкатон.Controllers
         [HttpPost("use-promocode")]
         public ActionResult UsePromocode(string Promocode)
         {
-            var promos = UsedPromocodes.promocodes;
+            var promos = OtherLists.promocodes;
             // Проверяем совпадение введенных данных с системными
             var cars = InfoHelper.cars;
             if (IsPromoCodeUsed == true)
@@ -68,17 +68,17 @@ namespace харкатон.Controllers
         }
 
 
-        [HttpDelete("delete-promocode")]
+        [HttpDelete("delete-promocode")] //удаление промокода
         public async Task<IActionResult> DeletePromo(string promo)
         {
-            var promocode = UsedPromocodes.promocodes;
+            var promocode = OtherLists.promocodes;
             var cars = InfoHelper.cars;
             if (promo == SystemPromocode)
             {
                 
                 await Task.Run(() =>
                 {
-                    UsedPromocodes.promocodes.Remove(promo);
+                    OtherLists.promocodes.Remove(promo);
                     IsPromoCodeUsed = false;
                     foreach (var car in cars)
                     {
@@ -94,7 +94,7 @@ namespace харкатон.Controllers
 
                 await Task.Run(() =>
                 {
-                    UsedPromocodes.promocodes.Remove(promo);
+                    OtherLists.promocodes.Remove(promo);
                     IsPromoCodeUsed = false;
                     foreach (var car in cars)
                     {
@@ -110,7 +110,7 @@ namespace харкатон.Controllers
 
                 await Task.Run(() =>
                 {
-                    UsedPromocodes.promocodes.Remove(promo);
+                    OtherLists.promocodes.Remove(promo);
                     IsPromoCodeUsed = false;
                     foreach (var car in cars)
                     {
