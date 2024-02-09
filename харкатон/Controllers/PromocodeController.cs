@@ -1,9 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using харкатон.Controllers.models;
 using харкатон.Helpers;
+using харкатон.Models;
+
 namespace харкатон.Controllers
 {
-    public class PromocodeController : Controller
+    [Authorize]
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PromocodeController : ControllerBase
     {
 
         // Система промокодов - ввод одного из трех промокодов дает разные скидки на все машины в зависимости от введенного промокода 

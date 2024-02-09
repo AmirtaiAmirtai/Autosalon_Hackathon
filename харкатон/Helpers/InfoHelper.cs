@@ -73,4 +73,4 @@ public class InfoHelper
 
         public static List<Car> purchasedCars = new List<Car> {};
         }
-}
+

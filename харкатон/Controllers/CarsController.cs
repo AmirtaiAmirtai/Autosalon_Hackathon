@@ -7,8 +7,10 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace харкатон.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
+    [ApiController]
+
     public class CarsController : ControllerBase
     {
         private static decimal userBalance = 0;

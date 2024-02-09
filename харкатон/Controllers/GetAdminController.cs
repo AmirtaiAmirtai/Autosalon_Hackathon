@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using харкатон.Controllers.models;
 using харкатон.Helpers;
+using харкатон.Models;
 
 namespace харкатон.Controllers
 {
-    public class AdminkaController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AdminkaController : ControllerBase
     {
         // данные для получения админки
         private const string SystemUsername = "admin";
@@ -17,7 +20,7 @@ namespace харкатон.Controllers
         };
 
 
-        [HttpPost("Admin/Login")]
+        [HttpPost("Admin-Login")]
 
         public ActionResult LoginAsAdmin(string Username, string Password)
         {
@@ -106,7 +109,7 @@ namespace харкатон.Controllers
 
 
         //просмотр удаленных машин. функция для админа
-        [HttpGet("See Deleted Cars")]
+        [HttpGet("See-Deleted-Cars")]
         public IActionResult GetDeletedCars()
 
         {
@@ -145,30 +148,7 @@ namespace харкатон.Controllers
                 else
                     return BadRequest("Недостаточно прав для осуществления данной команды.");
         }
-        [HttpPost("AddCar")]
-        public async Task<IActionResult> DeleteReview([FromBody] Car newCar)
-        {
-            if (user.IsActive == true)
-            {
-                if (newCar == null)
-                {
-                    return BadRequest("Неверные данные для автомобиля");
-                }
-
-                newCar.Id = InfoHelper.cars.Count + 1;
-
-                await Task.Run(() =>
-                {
-                    InfoHelper.cars.Add(newCar);
-                });
-
-                return CreatedAtAction("Добавлена машина: \n" + nameof(GetCar), new { id = newCar.Id }, newCar);
-            }
-            else
-            {
-                return BadRequest("Недостаточно прав для осуществления данной команды.");
-            }
-        }
+        
     }
 }
 
