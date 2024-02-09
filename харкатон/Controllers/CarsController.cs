@@ -1,100 +1,141 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using харкатон.Controllers.models;
+using RouteAttribute = Microsoft.AspNetCore.Components.RouteAttribute;
 using харкатон.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
-namespace харкатон.Controllers;
-
-[Authorize]
-[Route("api/[controller]")]
-public class CarsController : ControllerBase
+namespace харкатон.Controllers
 {
-
-    private static decimal userBalance = 0;
-
-    [HttpPost("setbalance")]
-    public async Task<IActionResult> SetBalance([FromBody] decimal balance)
+    [Authorize]
+    [Route("api/[controller]")]
+    public class CarsController : ControllerBase
     {
-        await Task.Run(() => 
-        {
-            userBalance = balance;
-        });
+        private static decimal userBalance = 0;
 
-        return Ok($"Баланс пользователя установлен: {userBalance}");
-    }
 
-    [HttpPost("purchase/{Id}")]
-    public async Task<IActionResult> PurchaseCar(int Id)
-    {
-        var car = InfoHelper.cars.FirstOrDefault(t => t.Id == Id);
-        if (car == null)
+
+        //установление баланса 
+        [HttpPost("setbalance")]
+        public async Task<IActionResult> SetBalance([FromBody] decimal balance)
         {
-            return NotFound("Автомобиль не найден");
+            await Task.Run(() =>
+            {
+                userBalance = balance;
+            });
+
+            return Ok($"Баланс пользователя установлен: {userBalance}");
         }
 
-        if (userBalance < car.Price)
+
+
+        //покупка машины. удаляет машину из списка после покупки. 
+        [HttpPost("purchase/{Id}")]
+        public async Task<IActionResult> PurchaseCar(int Id)
         {
-            return BadRequest("Недостаточно средств для покупки автомобиля");
+            var car = InfoHelper.cars.FirstOrDefault(t => t.Id == Id);
+            if (car == null)
+            {
+                return NotFound("Автомобиль не найден");
+            }
+            if (userBalance < car.Price)
+            {
+                return BadRequest("Недостаточно средств для покупки автомобиля");
+            }
+
+            await Task.Run(() =>
+            {
+                userBalance -= car.Price;
+                InfoHelper.cars.Remove(car);
+                InfoHelper.purchasedCars.Add(car);
+            });
+
+            return Ok($"Автомобиль '{car.Name}' куплен. Остаток на балансе: {userBalance}");
         }
 
-        await Task.Run(() => 
+
+
+        //Возврат машины 
+        [HttpPost("Refund/{Id}")]
+        public async Task<IActionResult> RefundCar(int Id)
         {
-            userBalance -= car.Price;
-            InfoHelper.cars.Remove(car);
-        });
+            var car = InfoHelper.purchasedCars.FirstOrDefault(t => t.Id == Id);
+            if (car == null)
+            {
+                return NotFound("Автомобиль не найден");
+            }
 
-        return Ok($"Автомобиль '{car.Name}' куплен. Остаток на балансе: {userBalance}");
-    }
+            await Task.Run(() =>
+            {
+                userBalance += car.Price;
+                InfoHelper.cars.Add(car);
+                InfoHelper.purchasedCars.Remove(car);
+            });
 
-    [HttpGet("getbalance")]
-    public async Task<IActionResult> GetUserBalance()
-    {
-        return Ok($"Текущий баланс: {userBalance}");
-    }
-
-    [HttpGet("see-cars")]
-    public async Task<IActionResult> GetCars()
-    {
-        return Ok(InfoHelper.cars);
-    }
-
-    [HttpGet("see-car-by/{id}")]
-    public async Task<IActionResult> GetCar(int id)
-    {
-        var car = InfoHelper.cars.FirstOrDefault(t => t.Id == id);
-        if (car == null)
-            return NotFound();
-
-        return Ok(car);
-    }
-    [HttpPost("AddCar")]
-    public async Task<IActionResult> AddCar([FromBody] Car newCar)
-    {
-        if (newCar == null)
-        {
-            return BadRequest("Неверные данные для автомобиля");
+            return Ok($"Возврат автомобиля'{car.Name}' осуществлён. Остаток на балансе: {userBalance}");
         }
 
-        newCar.Id = InfoHelper.cars.Count + 1;
 
-        await Task.Run(() =>
+
+        //Просмотр баланса 
+        [HttpGet("getbalance")]
+        public async Task<IActionResult> GetUserBalance()
         {
-            InfoHelper.cars.Add(newCar);
-        });
+            return Ok($"Текущий баланс: {userBalance}");
+        }
 
-        return CreatedAtAction(nameof(GetCar), new { id = newCar.Id }, newCar);
+
+        //Просмотр всех машин 
+        [HttpGet("see-cars")]
+        public async Task<IActionResult> GetCars()
+        {
+            return Ok(InfoHelper.cars);
+        }
+
+
+
+        //Просмотр купленных машин 
+        [HttpGet("see-purchased-cars")]
+        public async Task<IActionResult> GetPurchasedCars()
+        {
+            return Ok(InfoHelper.purchasedCars);
+        }
+
+
+
+        //Просмотр конкретной машины по ID 
+        [HttpGet("see-car-by/{id}")]
+        public async Task<IActionResult> GetCar(int id)
+        {
+            var car = InfoHelper.cars.FirstOrDefault(t => t.Id == id);
+            if (car == null)
+                return NotFound();
+
+            return Ok(car);
+        }
+
+        [HttpPost("Rate-A-Car/{Id}")]
+        public async Task<IActionResult> RateCar(int Id, int Rate, string review)
+        {
+            var car = InfoHelper.cars.FirstOrDefault(t => t.Id == Id);
+
+            if (car == null || review == null)
+            {
+                return NotFound("Ошибка ввода машины или отзыва. ");
+            }
+
+            if (Rate > 5 || Rate < 1)
+                return NotFound("Оценка не может быть выше 5 и ниже 1.");
+
+            await Task.Run(() =>
+            {
+                car.Review.Add(review);
+                car.Rate.Add(Rate);
+                car.GeneralRating = car.Rate.Average();
+            });
+
+            return Ok($"Отзыв для автомобиля'{car.Name}' оставлен. Спасибо!");
+        }
+
     }
-    [HttpDelete("Delete-Car-By/{id}")]
-    public async Task<IActionResult> DeleteCar(int id)
-    {
-        var car = InfoHelper.cars.FirstOrDefault(t => t.Id == id);
-        if (car == null)
-            return BadRequest();
 
-        await Task.Run(() => 
-        {
-            InfoHelper.cars.Remove(car);
-        });
 
-        return NoContent();
-    } }
+}
