@@ -1,7 +1,7 @@
 ﻿namespace харкатон.Controllers.models;
 
-namespace харкатон.Controllers.models
-{
+
+
     public class Car
     {
         public int Id { get; set; }
@@ -13,4 +13,4 @@ namespace харкатон.Controllers.models
         public List<int> Rate { get; set; } = new();
 
     }
-}
+
