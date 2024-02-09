@@ -39,7 +39,7 @@ builder.Services.AddSwaggerGen();
 //var connectionString = builder.Configuration.GetConnectionString("UserDB");
 //builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlite(connectionString));
 //builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<UserDbContext>();
-
+ builder.Services.AddAuthentication().AddCookie("cookie");
 
 var app = builder.Build();
 
@@ -49,6 +49,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseAuthentication();
 app.UseAuthorization();
 

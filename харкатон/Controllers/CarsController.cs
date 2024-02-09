@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using харкатон.Controllers.models;
-using RouteAttribute = Microsoft.AspNetCore.Components.RouteAttribute;
 using харкатон.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace харкатон.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 public class CarsController : ControllerBase
 {
