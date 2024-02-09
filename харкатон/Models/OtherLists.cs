@@ -1,6 +1,6 @@
 ﻿using харкатон.Controllers.models;
 
-namespace харкатон.Controllers
+namespace харкатон.Models
 {
     public class OtherLists
     {
@@ -9,5 +9,5 @@ namespace харкатон.Controllers
         public static List<Car> DeletedCars = new List<Car>();
     }
 
-   
+
 }
