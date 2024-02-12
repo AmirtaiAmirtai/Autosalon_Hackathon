@@ -148,7 +148,54 @@ namespace харкатон.Controllers
                 else
                     return BadRequest("Недостаточно прав для осуществления данной команды.");
         }
-        
+
+        //Добавление корзины для покупок
+        [ApiController]
+        [Route("api/[controller]")]
+        public class CarsController : ControllerBase
+        {
+            private List<ShoppingCartItem> _shoppingCart = new List<ShoppingCartItem>();
+
+            [HttpGet]
+            public IActionResult GetAllCars()
+            {
+                return Ok(_cars);
+            }
+
+            [HttpGet("{id}")]
+            public IActionResult GetCarById(int id)
+            {
+                var car = _cars.FirstOrDefault(c => c.Id == id);
+                if (car == null)
+                    return NotFound();
+
+                return Ok(car);
+            }
+
+            [HttpPost("addToCart")]
+            public IActionResult AddToCart(ShoppingCartItem item)
+            {
+                var car = _cars.FirstOrDefault(c => c.Id == item.CarId);
+                if (car == null)
+                    return NotFound("Машина не найдена");
+
+                _shoppingCart.Add(item);
+                return Ok("Товар добавлен в корзину");
+            }
+
+            [HttpDelete("removeFromCart/{carId}")]
+            public IActionResult RemoveFromCart(int carId)
+            {
+                var item = _shoppingCart.FirstOrDefault(i => i.CarId == carId);
+                if (item == null)
+                    return NotFound("Товар не найден в корзине");
+
+                _shoppingCart.Remove(item);
+                return Ok("Товар удален из корзины");
+            }
+        }
+
+
     }
 }
 
